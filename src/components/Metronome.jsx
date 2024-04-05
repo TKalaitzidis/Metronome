@@ -2,6 +2,7 @@ import classes from './Metronome.module.css';
 import { useState } from 'react';
 import BeatCounter from './BeatCounter';
 import RhythmList from './RhythmList';
+import Clock from './Clock';
 
 function Metronome (){
 
@@ -17,6 +18,7 @@ function Metronome (){
             <div className={classes.slider}>
                 <input type="range" min="20" max="300" value={tempo} steps="1" onChange={handleTempoChange} />
             </div>
+            <Clock timeInterval={1000} callback={() => console.log("play")}/>
             <div className={classes.beats}>
                 <input type="checkbox" id="stress" name="stress" />
                 <label htmlFor="stress">Stress first beat</label>
