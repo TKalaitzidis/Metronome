@@ -25,7 +25,7 @@ function Metronome (){
                 <input type="range" min="20" max="300" value={tempo} steps="1" onChange={handleTempoChange} />
             </div>
  
-            <Clock timeInterval={1000} callback={playStressed}/>
+            <Clock timeInterval={1000} callback={playStressed} tempo={tempo}/>
             <div className={classes.beats}>
                 <input type="checkbox" id="stress" name="stress" />
                 <label htmlFor="stress">Stress first beat</label>

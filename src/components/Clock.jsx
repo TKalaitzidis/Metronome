@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 function Clock(props) {
-    const timeInterval = props.timeInterval;
+
+    const timeInterval = (60/props.tempo)*1000;  //rhythm value/tempo * ms conversion
     
     const [isStarted, setIsStarted] = useState(false);
     const [timeoutId, setTimeoutId] = useState(null);
@@ -11,6 +12,7 @@ function Clock(props) {
     useEffect(() => {
         if (isStarted) {
             startClock();
+            props.callback();
         } else {
             stopClock();
         }
