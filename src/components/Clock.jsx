@@ -1,18 +1,53 @@
 import React, { useState, useEffect } from 'react';
+import Stressed from '../assets/Stressed.wav';
+import Unstressed from '../assets/Unstressed.wav';
 
 function Clock(props) {
 
-    const timeInterval = (60/props.tempo)*1000;  //rhythm value/tempo * ms conversion
+    let callCount = 1;
+
+    const timeInterval = ((60/props.tempo)*1000);             //((minute/tempo )* ms) conversion
     
-    const [isStarted, setIsStarted] = useState(false);
     const [timeoutId, setTimeoutId] = useState(null);
     
     let expected = Date.now() + timeInterval;
 
+    const stress = new Audio(Stressed);
+    const unstress = new Audio(Unstressed);
+
+    const callback = (callCount) => {
+        
+        
+        console.log(callCount);
+        console.log(props.isStressed);
+        if(props.isStressed){
+            if(callCount<=props.beats){
+                
+                if(callCount===1){
+                    stress.play();
+                    console.log("blabla");
+                }
+                else{
+                    unstress.play();
+                    console.log("blabla");
+                }
+                callCount++;
+            }
+        }
+        else{
+            unstress.play();
+        }
+        if (callCount > props.beats) {
+            callCount = 1;
+        }
+        return callCount;
+    };
+
     useEffect(() => {
-        if (isStarted) {
+        if (props.isStarted) {
             startClock();
-            props.callback();
+            callCount = callback(callCount);
+            
         } else {
             stopClock();
         }
@@ -21,11 +56,12 @@ function Clock(props) {
         return () => {
             clearTimeout(timeoutId);
         };
-    }, [isStarted]); // Run this effect whenever `isStarted` changes
+    }, [props.isStarted]); // Run this effect whenever `isStarted` changes
 
 
+    
     const handleToggle = () => {
-        setIsStarted(prevState => !prevState);
+        props.setIsStarted(prevState => !prevState);
     }
 
     const startClock = () => {
@@ -41,16 +77,16 @@ function Clock(props) {
     };
 
     const round = () => {
-        let drift = Date.now() - expected;
-        props.callback();
-        expected += timeInterval;
-        console.log("Drift:", drift);
-        setTimeoutId(setTimeout(round, timeInterval-drift));
+            let drift = Date.now() - expected;
+            callCount = callback(callCount);
+            expected += timeInterval;
+            console.log("Drift:", drift);
+            setTimeoutId(setTimeout(round, timeInterval-drift));
     };
 
     return (
         <button onClick={handleToggle}>
-            {isStarted ? 'Stop' : 'Start'}
+            {props.isStarted ? 'Stop' : 'Start'}
         </button>
     );
 }

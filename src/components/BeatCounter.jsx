@@ -1,20 +1,20 @@
 import React, {useState} from "react";
 
-function BeatCounter() {
-    const [beats, setBeats] = useState(2);
+function BeatCounter(props) {
+    
 
     const increment = () => {
-        setBeats(beats+1);
+        props.setBeats(props.beats+1);
     }
 
     const decrement = () => {
-        setBeats(beats-1);
+        props.setBeats(props.beats-1);
     }
 
     return(
         <span>
             <button onClick={decrement}>-</button>
-            <span>{beats}</span>
+            <span>{props.beats}</span>
             <button onClick={increment}>+</button>
         </span>
     );

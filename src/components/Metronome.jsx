@@ -3,19 +3,20 @@ import { useState } from 'react';
 import BeatCounter from './BeatCounter';
 import RhythmList from './RhythmList';
 import Clock from './Clock';
-import Stressed from '../assets/Stressed.wav';
 
 function Metronome (){
 
-    const playStressed = () => {
-        const audio = new Audio(Stressed);
-        audio.play();
-    };
+    const [isStarted, setIsStarted] = useState(false);
+
+    const [beats, setBeats] = useState(2);
 
     const [tempo, setTempo] = useState(60);
 
+    const [isStressed, setIsStressed] = useState(false);
+
     const handleTempoChange = (event) => {
         setTempo(parseInt(event.target.value));
+        setIsStarted(false); // Stop the clock when tempo changes
     };
 
     return(
@@ -25,11 +26,12 @@ function Metronome (){
                 <input type="range" min="20" max="300" value={tempo} steps="1" onChange={handleTempoChange} />
             </div>
  
-            <Clock timeInterval={1000} callback={playStressed} tempo={tempo}/>
+            <Clock tempo={tempo} isStarted={isStarted} setIsStarted={setIsStarted}
+                beats={beats} isStressed={isStressed}/>
             <div className={classes.beats}>
-                <input type="checkbox" id="stress" name="stress" />
+                <input type="checkbox" id="stress" name="stress" onClick={() => setIsStressed(prevState => !prevState)}/>
                 <label htmlFor="stress">Stress first beat</label>
-                <BeatCounter />
+                <BeatCounter beats={beats} setBeats={setBeats}/>
                 <RhythmList />
             </div>
         </div>
