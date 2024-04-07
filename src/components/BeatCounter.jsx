@@ -1,14 +1,24 @@
-import React, {useState} from "react";
+import React from "react";
 
 function BeatCounter(props) {
     
 
     const increment = () => {
-        props.setBeats(props.beats+1);
+        if (props.beats<12){
+            props.setBeats(props.beats+1);
+        }
+        else {
+            props.setBeats(12);
+        }
     }
 
     const decrement = () => {
-        props.setBeats(props.beats-1);
+        if(props.beats>1){
+            props.setBeats(props.beats-1);
+        }
+        else if (props.beats <= 1){
+            props.setBeats(1);
+        }
     }
 
     return(

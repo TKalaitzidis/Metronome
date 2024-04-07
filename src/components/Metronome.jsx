@@ -6,6 +6,8 @@ import Clock from './Clock';
 
 function Metronome (){
 
+    const [selectedOption, setSelectedOption] = useState('1');
+
     const [isStarted, setIsStarted] = useState(false);
 
     const [beats, setBeats] = useState(2);
@@ -27,12 +29,12 @@ function Metronome (){
             </div>
  
             <Clock tempo={tempo} isStarted={isStarted} setIsStarted={setIsStarted}
-                beats={beats} isStressed={isStressed}/>
+                beats={beats} isStressed={isStressed} selectedOption={selectedOption}/>
             <div className={classes.beats}>
                 <input type="checkbox" id="stress" name="stress" onClick={() => setIsStressed(prevState => !prevState)}/>
                 <label htmlFor="stress">Stress first beat</label>
                 <BeatCounter beats={beats} setBeats={setBeats}/>
-                <RhythmList />
+                <RhythmList  selectedOption={selectedOption} setSelectedOption={setSelectedOption}/>
             </div>
         </div>
     );

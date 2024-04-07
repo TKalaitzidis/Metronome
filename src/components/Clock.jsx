@@ -6,7 +6,7 @@ function Clock(props) {
 
     let callCount = 1;
 
-    const timeInterval = ((60/props.tempo)*1000);             //((minute/tempo )* ms) conversion
+    const timeInterval = ((60/props.tempo)*1000)/props.selectedOption;             //((minute/tempo )* ms) conversion
     
     const [timeoutId, setTimeoutId] = useState(null);
     
@@ -21,7 +21,7 @@ function Clock(props) {
         console.log(callCount);
         console.log(props.isStressed);
         if(props.isStressed){
-            if(callCount<=props.beats){
+            if(callCount<=props.beats*props.selectedOption){
                 
                 if(callCount===1){
                     stress.play();
@@ -37,7 +37,7 @@ function Clock(props) {
         else{
             unstress.play();
         }
-        if (callCount > props.beats) {
+        if (callCount > props.beats*props.selectedOption) {
             callCount = 1;
         }
         return callCount;
