@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Stressed from '../assets/Stressed.wav';
 import Unstressed from '../assets/Unstressed.wav';
+import Secondary from '../assets/Secondary.wav';
 
 function Clock(props) {
 
@@ -14,22 +15,30 @@ function Clock(props) {
 
     const stress = new Audio(Stressed);
     const unstress = new Audio(Unstressed);
+    const secondary = new Audio(Secondary);
+
+    let stressCount=0;
 
     const callback = (callCount) => {
-        
+        stressCount++;
         
         console.log(callCount);
-        console.log(props.isStressed);
+        console.log(stressCount);
         if(props.isStressed){
             if(callCount<=props.beats*props.selectedOption){
                 
                 if(callCount===1){
                     stress.play();
-                    console.log("blabla");
+                    console.log("first");
+                }
+                else if(stressCount% parseInt(props.selectedOption) === 1){
+                    unstress.play();
+                    console.log("second");
+
                 }
                 else{
-                    unstress.play();
-                    console.log("blabla");
+                    secondary.play();
+                    console.log("click")
                 }
                 callCount++;
             }
@@ -39,6 +48,9 @@ function Clock(props) {
         }
         if (callCount > props.beats*props.selectedOption) {
             callCount = 1;
+        }
+        if (stressCount > parseInt(props.selectedOption)*props.beats){
+            stressCount = 1;
         }
         return callCount;
     };
