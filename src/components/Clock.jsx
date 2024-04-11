@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import Stressed from '../assets/Stressed.wav';
-import Unstressed from '../assets/Unstressed.wav';
-import Secondary from '../assets/Secondary.wav';
+import { Howl } from 'howler';
+import Stressed from '../assets/Stressed.mp3';
+import Unstressed from '../assets/Unstressed.mp3';
+import Secondary from '../assets/Secondary.mp3';
 
 function Clock(props) {
 
     let callCount = 1;
 
-    const timeInterval = ((60/props.tempo)*1000)/props.selectedOption;             //((minute/tempo )* ms) conversion
+    const timeInterval = ((60/props.tempo)*1000)/props.selectedOption;             //((minute/tempo)* ms) conversion
     
     const [timeoutId, setTimeoutId] = useState(null);
     
     let expected = Date.now() + timeInterval;
 
-    const stress = new Audio(Stressed);
-    const unstress = new Audio(Unstressed);
-    const secondary = new Audio(Secondary);
+    const stress = new Howl({ src: [Stressed] });
+    const unstress = new Howl({ src: [Unstressed] });
+    const secondary = new Howl({ src: [Secondary] });
 
     let stressCount=0;
 
     const callback = (callCount) => {
         stressCount++;
-        
+
         console.log(callCount);
         console.log(stressCount);
         if(props.isStressed){
@@ -31,20 +32,29 @@ function Clock(props) {
                     stress.play();
                     console.log("first");
                 }
-                else if(stressCount% parseInt(props.selectedOption) === 1){
-                    unstress.play();
+                else if(stressCount % parseInt(props.selectedOption) === 1){ // Check within tolerance window
+                    secondary.play();
                     console.log("second");
-
+                    
                 }
                 else{
-                    secondary.play();
+                    unstress.play();
                     console.log("click")
                 }
                 callCount++;
             }
         }
         else{
-            unstress.play();
+            if(stressCount % parseInt(props.selectedOption) === 1){ // Check within tolerance window
+                secondary.play();
+                console.log("second");
+                
+            }
+            else{
+                unstress.play();
+                console.log("click")
+            }
+            callCount++;
         }
         if (callCount > props.beats*props.selectedOption) {
             callCount = 1;
@@ -104,3 +114,4 @@ function Clock(props) {
 }
 
 export default Clock;
+

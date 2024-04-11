@@ -29,7 +29,7 @@ function Metronome (){
             </div>
  
             <Clock tempo={tempo} isStarted={isStarted} setIsStarted={setIsStarted}
-                beats={beats} isStressed={isStressed} selectedOption={selectedOption}/>
+                beats={beats} isStressed={isStressed} selectedOption={selectedOption} tolerance={10}/>
             <div className={classes.beats}>
                 <input type="checkbox" id="stress" name="stress" onClick={() => setIsStressed(prevState => !prevState)}/>
                 <label htmlFor="stress">Stress first beat</label>
