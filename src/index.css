@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 *{
     box-sizing: border-box;
     margin: 0;
@@ -9,9 +13,3 @@ html,body {
     text-align: center;
     place-items: center;
 }
-
-.maindiv {
-    display: grid;
-    place-content: center;
-    height: 100vh;
-};
