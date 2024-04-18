@@ -108,7 +108,7 @@ function Clock(props) {
     };
 
     return (
-        <button onClick={handleToggle}>
+        <button onClick={handleToggle} className='pb-2.5'>
             {props.isStarted ? <FaPause style={{ color: '#ED8936' }} /> : <FaPlay style={{ color: '#ED8936' }} />}
         </button>
     );

@@ -19,8 +19,8 @@ function Metronome (){
 
     return(
         <div className="flex flex-col items-center justify-center h-screen gap-1 bg-black bg-opacity-80">
-            <div className="font-bold font-mont text-orange-400 text-4xl">
-                <span>{tempo}</span> <span className="text-sm">BPM</span>
+            <div className="font-bold font-mont text-orange-400 text-6xl">
+                <span>{tempo}</span> <span className="text-xl">BPM</span>
             </div>
             
             <div className="flex items-center">
