@@ -12,7 +12,7 @@ function RhythmList(props){
     const boxSize = "50px"; // You can adjust the size here
 
     return(
-        <div className='flex flex-row items-stretch justify-center'>
+        <div className='flex flex-row items-stretch justify-center pl-10'>
             <label htmlFor="quarter" className="radio-icon flex items-center mr-4 text-gray-300">
                 <input
                     type="radio"
