@@ -9,8 +9,10 @@ function RhythmList(props){
         props.setSelectedOption(event.target.value);
     };
 
+    const boxSize = "50px"; // You can adjust the size here
+
     return(
-        <div className='flex'>
+        <div className='flex flex-row items-stretch justify-center'>
             <label htmlFor="quarter" className="radio-icon flex items-center mr-4 text-gray-300">
                 <input
                     type="radio"
@@ -21,9 +23,9 @@ function RhythmList(props){
                     onChange={handleOptionChange}
                     className='hidden'
                 />
-                <img src={Quarter} alt="Quarter" className='border bg-gray-500 w-15 h-12 p-1 hover:bg-orange-400'/>           
+                <img src={Quarter} alt="Quarter" className={`border-hidden rounded-md ${props.selectedOption === '1' ? 'bg-orange-400' : 'bg-gray-500'} w-${boxSize} h-${boxSize} p-1 hover:bg-orange-400`} />           
             </label> 
-            <label htmlFor="eight" className="radio-icon flex items-center mr-4">    
+            <label htmlFor="eight" className="radio-icon flex items-center mr-4 ">    
                 <input 
                     type="radio" 
                     name="rhythm" 
@@ -31,8 +33,8 @@ function RhythmList(props){
                     value="2" 
                     checked={props.selectedOption === '2'} 
                     onChange={handleOptionChange} 
-                    className='hidden' />
-                <img src={Eight} alt="Eight" className='border bg-gray-500 w-18 p-1 hover:bg-orange-400'/>
+                    className='hidden ' />
+                <img src={Eight} alt="Eight" className={`border-hidden rounded-md ${props.selectedOption === '2' ? 'bg-orange-400' : 'bg-gray-500'} w-${boxSize} h-${boxSize} p-1 hover:bg-orange-400`} />
             </label>
             <label htmlFor="sixteen" className="radio-icon flex items-center mr-4">    
                 <input 
@@ -43,7 +45,7 @@ function RhythmList(props){
                     checked={props.selectedOption === '4'} 
                     onChange={handleOptionChange} 
                     className='hidden' />
-                <img src={Sixteen} alt="Sixteen" className='border bg-gray-500 w-19 p-1 hover:bg-orange-400'/>
+                <img src={Sixteen} alt="Sixteen" className={`border-hidden rounded-md ${props.selectedOption === '4' ? 'bg-orange-400' : 'bg-gray-500'} w-${boxSize} h-${boxSize} p-1 hover:bg-orange-400`} />
             </label>
             <label htmlFor="triplet" className="radio-icon flex items-center mr-4">    
                 <input 
@@ -54,7 +56,7 @@ function RhythmList(props){
                     checked={props.selectedOption === '3'} 
                     onChange={handleOptionChange} 
                     className='hidden' />
-                <img src={Triplet} alt="Triplet" className='border bg-gray-500 w-16 h-12 p-1 hover:bg-orange-400' />
+                <img src={Triplet} alt="Triplet" className={`border-hidden rounded-md ${props.selectedOption === '3' ? 'bg-orange-400' : 'bg-gray-500'} w-4/6 h-4/3 p-1 hover:bg-orange-400`} />
             </label>
         </div>
     )

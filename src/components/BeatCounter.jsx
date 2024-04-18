@@ -22,10 +22,11 @@ function BeatCounter(props) {
     }
 
     return(
-        <span>
-            <button onClick={decrement}>-</button>
-            <span>{props.beats}</span>
-            <button onClick={increment}>+</button>
+        <span className="font-mont text-orange-400 flex-col ml-20">
+            <button onClick={decrement} 
+            className="border-hidden rounded-full p-1 w-7 h-6 m-1 flex flex-col items-center justify-center bg-gray-500">-</button>
+            <span className="flex items-center justify-center">{props.beats}</span>
+            <button onClick={increment} className="border-hidden rounded-full p-1 w-7 h-6 m-1 flex items-center justify-center flex-col bg-gray-500">+</button>
         </span>
     );
 }

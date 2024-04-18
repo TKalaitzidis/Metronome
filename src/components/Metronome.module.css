@@ -1,0 +1,39 @@
+
+.customcheckbox {
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    width: 16px;
+    height: 16px;
+    background-color: transparent;
+    border: 2px solid #ccc; 
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .customcheckbox:checked {
+    background-color: #ED8936; 
+    border-color: #ED8936; 
+  }
+  
+
+  .customcheckbox:checked::after {
+    
+    position: absolute;
+    top: 1px;
+    left: 4px;
+  }
+  
+  .customslider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px; /* Adjust the size of the slider thumb as needed */
+    height: 16px; /* Adjust the size of the slider thumb as needed */
+    background-color: #ED8936; /* Orange-500 color */
+    border-radius: 50%; /* Rounded shape for the slider thumb */
+    cursor: pointer;
+  }

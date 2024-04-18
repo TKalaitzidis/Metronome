@@ -3,6 +3,7 @@ import { Howl } from 'howler';
 import Stressed from '../assets/Stressed.mp3';
 import Unstressed from '../assets/Unstressed.mp3';
 import Secondary from '../assets/Secondary.mp3';
+import { FaPlay, FaPause } from 'react-icons/fa';
 
 function Clock(props) {
 
@@ -108,7 +109,7 @@ function Clock(props) {
 
     return (
         <button onClick={handleToggle}>
-            {props.isStarted ? 'Stop' : 'Start'}
+            {props.isStarted ? <FaPause style={{ color: '#ED8936' }} /> : <FaPlay style={{ color: '#ED8936' }} />}
         </button>
     );
 }
