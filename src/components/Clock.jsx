@@ -7,7 +7,8 @@ import { FaPlay, FaPause } from 'react-icons/fa';
 
 function Clock(props) {
 
-    let callCount = 1;
+    const [callCount, setCallCount] = useState(1);
+    const [stressCount, setStressCount] = useState(0);
 
     const timeInterval = ((60/props.tempo)*1000)/props.selectedOption;             //((minute/tempo)* ms) conversion
     
@@ -19,58 +20,56 @@ function Clock(props) {
     const unstress = new Howl({ src: [Unstressed] });
     const secondary = new Howl({ src: [Secondary] });
 
-    let stressCount=0;
+    
 
-    const callback = (callCount) => {
-        stressCount++;
+    const callback = () => {
+    setStressCount(prevStressCount => prevStressCount + 1);
 
-        console.log(callCount);
-        console.log(stressCount);
-        if(props.isStressed){
-            if(callCount<=props.beats*props.selectedOption){
-                
-                if(callCount===1){
-                    stress.play();
-                    console.log("first");
-                }
-                else if(stressCount % parseInt(props.selectedOption) === 1){ // Check within tolerance window
-                    secondary.play();
-                    console.log("second");
-                    
-                }
-                else{
-                    unstress.play();
-                    console.log("click")
-                }
-                callCount++;
-            }
-        }
-        else{
-            if(stressCount % parseInt(props.selectedOption) === 1){ // Check within tolerance window
+    if (props.isStressed) {
+        if (callCount <= props.beats * props.selectedOption) {
+            if (callCount === 1) {
+                stress.play();
+                console.log("first");
+            } else if (stressCount % parseInt(props.selectedOption) === 1) {
                 secondary.play();
                 console.log("second");
-                
-            }
-            else{
+            } else {
                 unstress.play();
-                console.log("click")
+                console.log("click");
             }
-            callCount++;
+
+            // Functional update for callCount
+            setCallCount(prevCallCount => prevCallCount + 1);
         }
-        if (callCount > props.beats*props.selectedOption) {
-            callCount = 1;
+    } else {
+        if (callCount % parseInt(props.selectedOption) === 1) {
+            secondary.play();
+            console.log("second");
+        } else {
+            unstress.play();
+            console.log("click");
         }
-        if (stressCount > parseInt(props.selectedOption)*props.beats){
-            stressCount = 1;
-        }
-        return callCount;
-    };
+
+        setCallCount(prevCallCount => prevCallCount + 1);
+    }
+
+    if (callCount > props.beats * props.selectedOption) {
+        debugger;
+        setCallCount(1);
+    }
+    if (stressCount > parseInt(props.selectedOption) * props.beats) {
+        debugger;
+        setStressCount(1);
+    }
+};
+
+  
+      
 
     useEffect(() => {
         if (props.isStarted) {
             startClock();
-            callCount = callback(callCount);
-            
+            callback(1);
         } else {
             stopClock();
         }
@@ -96,12 +95,14 @@ function Clock(props) {
 
     const stopClock = () => {
         clearTimeout(timeoutId);
+        setCallCount(1);
+        setStressCount(1);
         console.log("Clock stopped");
     };
 
     const round = () => {
             let drift = Date.now() - expected;
-            callCount = callback(callCount);
+            callback(callCount);
             expected += timeInterval;
             console.log("Drift:", drift);
             setTimeoutId(setTimeout(round, timeInterval-drift));
