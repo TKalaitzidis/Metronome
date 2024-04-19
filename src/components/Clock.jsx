@@ -74,13 +74,21 @@ function Clock(props) {
             stopClock();
         }
 
+        document.addEventListener("keydown", handleKeyDown);
+
         // Cleanup function
         return () => {
             clearTimeout(timeoutId);
+            document.removeEventListener("keydown", handleKeyDown);
         };
     }, [props.isStarted]); // Run this effect whenever `isStarted` changes
 
 
+    const handleKeyDown = (event) => {
+      if (event.code === "Space") {
+          handleToggle();
+      }
+  };
     
     const handleToggle = () => {
         props.setIsStarted(prevState => !prevState);
