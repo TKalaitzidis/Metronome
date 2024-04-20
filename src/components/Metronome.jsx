@@ -36,7 +36,7 @@ function Metronome (){
                 <BeatCounter beats={beats} setBeats={setBeats}/>
             </div>
             <Clock tempo={tempo} isStarted={isStarted} setIsStarted={setIsStarted}
-                beats={beats} isStressed={isStressed} selectedOption={selectedOption} tolerance={10} />
+                beats={beats} isStressed={isStressed} selectedOption={selectedOption}/>
             <div className="flex w-full justify-between items-center">
                 <div className='flex-1 items-center'>
                     <input 
