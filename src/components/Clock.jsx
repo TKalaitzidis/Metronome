@@ -1,118 +1,111 @@
-import React, { useState, useEffect } from 'react';
-import { Howl } from 'howler';
-import Stressed from '../assets/Stressed.mp3';
-import Unstressed from '../assets/Unstressed.mp3';
-import Secondary from '../assets/Secondary.mp3';
-import { FaPlay, FaPause } from 'react-icons/fa';
+import React, { useEffect, useRef } from "react";
+import { Howl } from "howler";
+import Stressed from "../assets/Stressed.mp3";
+import Unstressed from "../assets/Unstressed.mp3";
+import Secondary from "../assets/Secondary.mp3";
+import { FaPlay, FaPause } from "react-icons/fa";
 
 function Clock(props) {
 
-    let callCount = 1;
+  const timeInterval = ((60 / props.tempo) * 1000) / props.selectedOption; //((minute/tempo)* ms) conversion
 
-    const timeInterval = ((60/props.tempo)*1000)/props.selectedOption;             //((minute/tempo)* ms) conversion
-    
-    const [timeoutId, setTimeoutId] = useState(null);
-    
-    let expected = Date.now() + timeInterval;
+  const intervalRef = useRef(null);
+  const callCountRef = useRef(1);
+  const stressCountRef = useRef(1);
 
-    const stress = new Howl({ src: [Stressed] });
-    const unstress = new Howl({ src: [Unstressed] });
-    const secondary = new Howl({ src: [Secondary] });
+  const stress = new Howl({ src: [Stressed] });
+  const unstress = new Howl({ src: [Unstressed] });
+  const secondary = new Howl({ src: [Secondary] });
 
-    let stressCount=0;
 
-    const callback = (callCount) => {
-        stressCount++;
+  const callback = () => {
+    stressCountRef.current+=1;
 
-        console.log(callCount);
-        console.log(stressCount);
-        if(props.isStressed){
-            if(callCount<=props.beats*props.selectedOption){
-                
-                if(callCount===1){
-                    stress.play();
-                    console.log("first");
-                }
-                else if(stressCount % parseInt(props.selectedOption) === 1){ // Check within tolerance window
-                    secondary.play();
-                    console.log("second");
-                    
-                }
-                else{
-                    unstress.play();
-                    console.log("click")
-                }
-                callCount++;
-            }
-        }
-        else{
-            if(stressCount % parseInt(props.selectedOption) === 1){ // Check within tolerance window
-                secondary.play();
-                console.log("second");
-                
-            }
-            else{
-                unstress.play();
-                console.log("click")
-            }
-            callCount++;
-        }
-        if (callCount > props.beats*props.selectedOption) {
-            callCount = 1;
-        }
-        if (stressCount > parseInt(props.selectedOption)*props.beats){
-            stressCount = 1;
-        }
-        return callCount;
-    };
-
-    useEffect(() => {
-        if (props.isStarted) {
-            startClock();
-            callCount = callback(callCount);
-            
+    if (props.isStressed) {
+        
+      if (callCountRef.current <= props.beats * props.selectedOption) {
+        if (callCountRef.current === 1) {
+          stress.play();
+          console.log("first");
+        } else if (stressCountRef.current % parseInt(props.selectedOption) === 1) {
+          secondary.play();
+          console.log("second");
         } else {
-            stopClock();
+          unstress.play();
+          console.log("click");
         }
 
-        // Cleanup function
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    }, [props.isStarted]); // Run this effect whenever `isStarted` changes
-
-
-    
-    const handleToggle = () => {
-        props.setIsStarted(prevState => !prevState);
+        
+        callCountRef.current+=1;
+      }
+    } else {
+      if (callCountRef.current % parseInt(props.selectedOption) === 1) {
+        secondary.play();
+        console.log("second");
+      } else {
+        unstress.play();
+        console.log("click");
+      }
+      callCountRef.current+=1;
+      
     }
 
-    const startClock = () => {
-        const id = setTimeout(round, timeInterval);
-        setTimeoutId(id);
-        console.log("Clock started");
+    if (callCountRef.current > props.beats * props.selectedOption) {
+        callCountRef.current=1;
+    }
+    if (stressCountRef.current > parseInt(props.selectedOption) * props.beats) {
+        stressCountRef.current=1;
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
     };
+  }, []);
 
+  const handleKeyDown = (event) => {
+    if (event.code === "Space") {
+      handleToggle();
+    }
+  };
 
-    const stopClock = () => {
-        clearTimeout(timeoutId);
-        console.log("Clock stopped");
-    };
+  const handleToggle = () => {
+    props.setIsStarted(!props.isStarted);
+    if (!props.isStarted) {
+      startClock();
+      callback();
+    } else {
+      stopClock();
+    }
+  };
 
-    const round = () => {
-            let drift = Date.now() - expected;
-            callCount = callback(callCount);
-            expected += timeInterval;
-            console.log("Drift:", drift);
-            setTimeoutId(setTimeout(round, timeInterval-drift));
-    };
+  const startClock = () => {
+    const intervalId = setInterval(() => {
+      callback();
+    }, timeInterval);
 
-    return (
-        <button onClick={handleToggle} className='pb-2.5'>
-            {props.isStarted ? <FaPause style={{ color: '#ED8936' }} /> : <FaPlay style={{ color: '#ED8936' }} />}
-        </button>
-    );
+    intervalRef.current = intervalId;
+    console.log("Clock started");
+  };
+
+  const stopClock = () => {
+    clearInterval(intervalRef.current);
+    callCountRef.current=1;
+    stressCountRef.current=1;
+    console.log("Clock stopped");
+  };
+
+  return (
+    <button onClick={handleToggle} className="pb-2.5">
+      {props.isStarted ? (
+        <FaPause style={{ color: "#ED8936" }} />
+      ) : (
+        <FaPlay style={{ color: "#ED8936" }} />
+      )}
+    </button>
+  );
 }
 
 export default Clock;
-
