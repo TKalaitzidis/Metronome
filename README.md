@@ -26,3 +26,6 @@ CSS Modules are employed for styling components, ensuring encapsulation and main
 
 # How to install: 
 Run `npm install` and then `npm run dev` inside the directory of the project. 🚀
+
+# License
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT), allowing users to utilize, modify, and distribute the software as per the terms specified.
